@@ -1,0 +1,71 @@
+<mujoco model="omx_scene">
+  <!-- Robot + longer table + overhead camera + three shapes and their
+       colour-matched drop zones (wider gap between pick row and zones). -->
+  <include file="omx.xml"/>
+
+  <statistic center="0.15 0 0.15" extent="0.75"/>
+
+  <visual>
+    <headlight ambient="0.35 0.35 0.35" diffuse="0.5 0.5 0.5" specular="0.2 0.2 0.2"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <quality shadowsize="2048" offsamples="2"/>
+    <global azimuth="230" elevation="-22" offwidth="1600" offheight="1200"/>
+    <map znear="0.01" zfar="50"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.28 0.34 0.42" rgb2="0.06 0.07 0.09" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.20 0.22 0.24" rgb2="0.26 0.28 0.30" markrgb="0.5 0.5 0.5" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="6 6" reflectance="0.10" specular="0.3" shininess="0.3"/>
+    <material name="table_mat" rgba="0.55 0.42 0.30 1" specular="0.2" shininess="0.2"/>
+    <material name="mast_mat"  rgba="0.15 0.15 0.17 1" specular="0.4" shininess="0.3"/>
+    <material name="red_obj"   rgba="0.85 0.20 0.20 1" specular="0.3" shininess="0.3"/>
+    <material name="green_obj" rgba="0.20 0.75 0.30 1" specular="0.3" shininess="0.3"/>
+    <material name="blue_obj"  rgba="0.20 0.35 0.85 1" specular="0.3" shininess="0.3"/>
+    <material name="red_zone"   rgba="0.85 0.20 0.20 0.5"/>
+    <material name="green_zone" rgba="0.20 0.75 0.30 0.5"/>
+    <material name="blue_zone"  rgba="0.20 0.35 0.85 0.5"/>
+    <mesh name="hexprism" file="hexprism.stl"/>
+  </asset>
+
+  <worldbody>
+    <light name="key" pos="0.4 0.4 1.2" dir="-0.3 -0.35 -1" directional="false" diffuse="0.7 0.7 0.7" specular="0.35 0.35 0.35" cutoff="70"/>
+    <light name="fill" pos="-0.7 -0.6 0.9" dir="0.6 0.5 -0.9" directional="true" diffuse="0.35 0.35 0.4"/>
+    <geom name="floor" type="plane" size="0 0 0.05" pos="0 0 0" material="groundplane" contype="1" conaffinity="1"/>
+
+    <!-- overhead camera on a mast -->
+    <body name="camera_mast" pos="0.15 0.32 0">
+      <geom type="cylinder" size="0.008 0.25" pos="0 0 0.25" material="mast_mat" contype="0" conaffinity="0"/>
+      <geom type="cylinder" size="0.008 0.17" pos="0 -0.17 0.50" euler="1.5708 0 0" material="mast_mat" contype="0" conaffinity="0"/>
+      <geom type="box" size="0.02 0.02 0.012" pos="0 -0.32 0.50" material="mast_mat" contype="0" conaffinity="0"/>
+    </body>
+    <camera name="overhead" pos="0.15 0 0.50" xyaxes="1 0 0 0 1 0" fovy="55" resolution="640 480"/>
+
+    <!-- longer table -->
+    <body name="table" pos="0.16 0 0.025">
+      <geom name="table_top" type="box" size="0.11 0.145 0.025" material="table_mat" contype="1" conaffinity="1"/>
+    </body>
+
+    <!-- drop zones (front row, near the base) -->
+    <geom name="zone_red"   type="box" size="0.022 0.022 0.0006" pos="0.105 -0.075 0.0506" material="red_zone"   contype="0" conaffinity="0"/>
+    <geom name="zone_green" type="box" size="0.022 0.022 0.0006" pos="0.105  0.000 0.0506" material="green_zone" contype="0" conaffinity="0"/>
+    <geom name="zone_blue"  type="box" size="0.022 0.022 0.0006" pos="0.105  0.075 0.0506" material="blue_zone"  contype="0" conaffinity="0"/>
+
+    <!-- graspable shapes (back row, far from the zones) -->
+    <body name="cube" pos="0.205 -0.075 0.0625">
+      <freejoint name="cube_free"/>
+      <inertial pos="0 0 0" mass="0.02" diaginertia="2e-6 2e-6 2e-6"/>
+      <geom name="cube_geom" type="box" size="0.0125 0.0125 0.0125" material="red_obj" contype="1" conaffinity="1" friction="2.2 0.05 0.001" solref="0.008 1"/>
+    </body>
+    <body name="cylinder" pos="0.205 0.000 0.0625">
+      <freejoint name="cylinder_free"/>
+      <inertial pos="0 0 0" mass="0.02" diaginertia="2e-6 2e-6 2e-6"/>
+      <geom name="cyl_geom" type="cylinder" size="0.0125 0.0125" material="green_obj" contype="1" conaffinity="1" friction="2.2 0.05 0.001" solref="0.008 1"/>
+    </body>
+    <body name="hexagon" pos="0.205 0.075 0.0625">
+      <freejoint name="hexagon_free"/>
+      <inertial pos="0 0 0" mass="0.02" diaginertia="2e-6 2e-6 2e-6"/>
+      <geom name="hex_geom" type="mesh" mesh="hexprism" material="blue_obj" contype="1" conaffinity="1" friction="2.2 0.05 0.001" solref="0.008 1"/>
+    </body>
+  </worldbody>
+</mujoco>
