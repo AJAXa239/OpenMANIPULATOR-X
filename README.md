@@ -7,7 +7,7 @@ A full perception-to-motion pipeline built on the ROBOTIS OpenMANIPULATOR-X 4-DO
 ## Demo
 
 ### MuJoCo Simulation
-> *Add a screenshot or GIF of the arm in the MuJoCo window here*
+![image](src/videos/arm.gif)
 
 ### RViz — Robot Model & TF Tree
 > *Add a screenshot of RViz showing the arm model and motion planning here*
