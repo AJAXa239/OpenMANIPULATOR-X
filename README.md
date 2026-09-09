@@ -13,7 +13,7 @@ A full perception-to-motion pipeline built on the ROBOTIS OpenMANIPULATOR-X 4-DO
 ![image](src/videos/rviz.gif)
 
 ### Pick-and-Place with OpenCV Detection
-> *Add a GIF of the full vision-driven sort here — arm parking, camera detecting, then picking and placing all three objects*
+![image](src/videos/107898.gif)
 
 ---
 
