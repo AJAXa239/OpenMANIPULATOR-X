@@ -10,7 +10,7 @@ A full perception-to-motion pipeline built on the ROBOTIS OpenMANIPULATOR-X 4-DO
 ![image](src/videos/arm.gif)
 
 ### RViz — Robot Model & TF Tree
-> *Add a screenshot of RViz showing the arm model and motion planning here*
+![image](src/videos/rviz.gif)
 
 ### Pick-and-Place with OpenCV Detection
 > *Add a GIF of the full vision-driven sort here — arm parking, camera detecting, then picking and placing all three objects*
